@@ -39,7 +39,11 @@
 
     <property name="module.build.dir" value="${module.root}/build"/>
     <property name="module.build.classes" value="${module.build.dir}/classes"/>
-    <property name="module.build.java" value="${module.build.dir}/java"/>
+
+ 	<!-- When building from ant, this directory is created and the java is
+ 	     generated into it. When building from Eclipse, the source directory
+ 	     is used. -->
+ 	<property name="module.build.java" value="${module.build.dir}/java"/>
 
     <property name="result.jar" value="argo_idl.jar"/>
 
