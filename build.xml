@@ -20,6 +20,11 @@
     <!-- we really need an absolute path for argo.root.dir -->
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/../argouml" />
+ 	<!-- Read the override file to get base paths for default.properties
+ 	     correct for when running this from the Eclipse setup. -->
+ 	<property file="${override.build.properties}"/>
+ 	<property file="${argo.src.dir}/default.properties"/>
+
     <property name="argo.build.dir" value="${argo.root.dir}/build" />
      
     <property name="module.root" value="."/>
@@ -33,8 +38,6 @@
     <property name="module.build.java" value="${module.build.dir}/java"/>
 
     <property name="result.jar" value="argo_idl.jar"/>
-
-    <property name="antlrall.jar.path" value="${argo.build.dir}/antlrall.jar"/>
 
     <path id="compile.classpath">
       <pathelement location="${argo.build.dir}/argouml-model.jar"/>
