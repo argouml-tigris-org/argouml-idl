@@ -20,10 +20,14 @@
     <!-- we really need an absolute path for argo.root.dir -->
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/../argouml" />
- 	<!-- Read the override file to get base paths for default.properties
- 	     correct for when running this from the Eclipse setup. -->
- 	<property file="${override.build.properties}"/>
- 	<property file="${argo.src.dir}/default.properties"/>
+    <!-- Read the override file to get base paths for default.properties
+         correct for when running this from the Eclipse setup. -->
+    <property file="${override.build.properties}"/>
+
+    <!-- If not set by the override file we still need this one for antlr. -->
+    <property name="argo.src.dir" value="${argo.root.dir}/src_new"/>
+
+    <property file="${argo.src.dir}/default.properties"/>
 
     <property name="argo.build.dir" value="${argo.root.dir}/build" />
      
@@ -72,7 +76,8 @@
     <echo message="Generate parsers using ${antlrall.jar.path}"/>
     <mkdir dir="${module.build.java}/org/argouml/uml/reveng/idl"/>
 
-    <java fork="yes" classname="antlr.Tool" classpath="${antlrall.jar.path}">
+    <java fork="yes" classname="antlr.Tool" classpath="${antlrall.jar.path}"
+          failonerror="yes">
       <arg value="-o"/>
       <arg file="${module.build.java}/org/argouml/uml/reveng/idl"/>
       <arg file="${module.src.dir}/org/argouml/uml/reveng/idl/idl_modified.g"/>
@@ -130,8 +135,8 @@
         <classpath>
             <fileset dir="${module.build.dir}">
                 <include name="${result.jar}" />
-	    </fileset>
-	    <!-- TODO: Can somebody explain why this is working? -->
+            </fileset>
+            <!-- TODO: Can somebody explain why this is working? -->
             <pathelement location="${argo.build.dir}/argouml.jar"/>
         </classpath>
 
