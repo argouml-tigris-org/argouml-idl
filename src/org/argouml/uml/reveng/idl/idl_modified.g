@@ -29,6 +29,8 @@ import java.util.Iterator;
  *  Jim Coker, jcoker@magelang.com
  *  Gary Duzan, gduzan@bbn.com
  *
+ * base V3 grammar from http://www.antlr.org/grammar/1072891676218/idl.g
+ *
  *  modifications for ArgoUML:
  *  Markus Klink, mkl@tigris.org
  */
