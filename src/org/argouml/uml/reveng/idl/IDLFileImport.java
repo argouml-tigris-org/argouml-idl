@@ -27,79 +27,51 @@ package org.argouml.uml.reveng.idl;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
-import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.reveng.DiagramInterface;
-import org.argouml.uml.reveng.FileImportSupport;
-import org.argouml.uml.reveng.Import;
+import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.uml.reveng.FileImportUtils;
+import org.argouml.uml.reveng.ImportInterface;
+import org.argouml.uml.reveng.ImportSettings;
+import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.uml.reveng.java.Modeller;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 /**
  * This is the main class for the IDL import.
  *
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
-public class IDLFileImport extends FileImportSupport {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(IDLFileImport.class);
+public class IDLFileImport implements ImportInterface, ModuleInterface {
 
     /////////////////////////////////////////////////////////
     // Instance variables
 
-    /**
-     * The instance for a singleton pattern.
-     */
-    private static final IDLFileImport INSTANCE = new IDLFileImport();
-
-    /**
-     * An interface to the current diagram.
-     */
-    private DiagramInterface diagram;
-
-    /** The files that needs a second RE pass. */
-    private ArrayList secondPassFiles;
-
     // The current project.
     private Project currentProject = null;
 
-    private Import myImport;
+    private ImportSettings mySettings;
 
     /**
-     * Return the singleton instance of the Import class.
-     *
-     * @return The only instance of this class.
+     * Default constructor.
      */
-    public static IDLFileImport getInstance() {
-	return INSTANCE;
+    public IDLFileImport() {
+        super();
     }
 
-    /**
-     * @see org.argouml.application.api.PluggableImport#parseFile(
-     *         org.argouml.kernel.Project, java.lang.Object,
-     *         org.argouml.uml.reveng.DiagramInterface,
-     *         org.argouml.uml.reveng.Import)
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
      */
-    public void parseFile(
-			  Project p,
-			  Object o,
-			  DiagramInterface theDiagram,
-			  Import theImport)
-	throws Exception {
+    public void parseFile(Project p, Object o, ImportSettings settings) throws ImportException {
 	if (o instanceof File) {
 	    File f = (File) o;
-	    diagram = theDiagram;
-	    myImport = theImport;
+	    mySettings = settings;
 	    startImport(p, f);
 	}
     }
@@ -109,29 +81,14 @@ public class IDLFileImport extends FileImportSupport {
      *
      * @param p The project, where the import results are added.
      * @param f The file to start with.
-     * @throws Exception if something goes wrong.
      */
-    public void startImport(Project p, File f) throws Exception {
-	secondPassFiles = new ArrayList();
+    public void startImport(Project p, File f) throws ImportException {
 	currentProject = p;
 
 	// Process the current file. If it's a directory, process all the file
 	// in it.
 	processFile(f, true);
 
-	// Layout the modified diagrams.
-	for (Enumeration e = diagram.getModifiedDiagrams().elements();
-	     e.hasMoreElements();
-	     ) {
-	    ClassdiagramLayouter layouter =
-		new ClassdiagramLayouter((UMLDiagram) e.nextElement());
-	    layouter.layout();
-
-	    // Resize the diagram???
-	}
-
-	// Let the use close the status window.
-	//_status.importCompleted();
     }
 
     /**
@@ -141,9 +98,8 @@ public class IDLFileImport extends FileImportSupport {
      * @param f The directory as a File.
      * @param subdirectories If <tt>true</tt> we process subdirectories.
      * @return The number of files to process.
-     * @throws Exception if something goes wrong.
      */
-    private int countFiles(File f, boolean subdirectories) throws Exception {
+    private int countFiles(File f, boolean subdirectories) {
 	if (f.isDirectory() && subdirectories) {
 	    return countDirectory(f);
 	} else {
@@ -159,9 +115,8 @@ public class IDLFileImport extends FileImportSupport {
      *
      * @param f  The directory as a File.
      * @return The number of files in that directory.
-     * @throws Exception if something goes wrong.
      */
-    private int countDirectory(File f) throws Exception {
+    private int countDirectory(File f) {
 	int total = 0;
 	String[] files = f.list(); // Get the content of the directory
 
@@ -169,10 +124,8 @@ public class IDLFileImport extends FileImportSupport {
 	    total
 		+= countFiles(
 			      new File(f, files[i]),
-			      myImport.isDiscendDirectoriesRecursively());
-
+			      mySettings.isDescendSelected());
 	}
-
 	return total;
     }
 
@@ -184,7 +137,7 @@ public class IDLFileImport extends FileImportSupport {
      * @param subdirectories If <tt>true</tt> we process subdirectories.
      * @throws Exception Parser exceptions.
      */
-    public void processFile(File f, boolean subdirectories) throws Exception {
+    public void processFile(File f, boolean subdirectories) throws ImportException {
 
 	if (f.isDirectory()
 	    && subdirectories) { // If f is a directory and the subdirectory
@@ -192,16 +145,13 @@ public class IDLFileImport extends FileImportSupport {
 	    processDirectory(f); // import all the files in this directory
 	} else {
 
-	    if (f.getName().endsWith(".idl")) {
+	    if (isParseable(f)) {
 		String fileName = f.getName();
 		try {
 		    parseFile(new FileInputStream(f), fileName);
-		    // Try to parse this file.
-		} catch (Exception e1) {
-		    e1.printStackTrace();
-		    secondPassFiles.add(f);
+		} catch (FileNotFoundException e) {
+                    throw new ImportException("File: " + fileName , e);
 		}
-
 	    }
 	}
     }
@@ -211,11 +161,9 @@ public class IDLFileImport extends FileImportSupport {
      * and creates packages for the directories.
      *
      * @param f The directory.
-     *
-     * @throws Exception Parser exceptions.
      */
-    protected void processDirectory(File f) throws Exception {
-	boolean doSubdirs = myImport.isDiscendDirectoriesRecursively();
+    protected void processDirectory(File f) throws ImportException {
+	boolean doSubdirs = mySettings.isDescendSelected();
 
 	String[] files = f.list(); // Get the content of the directory
 
@@ -226,13 +174,13 @@ public class IDLFileImport extends FileImportSupport {
 
 
     /**
-     * This method parses 1 Java classfile.
+     * This method parses a single IDL source file.
      *
      * @param is The InputStream for the file to parse.
      * @param fileName The name of the parsed file.
-     * @throws Exception Parser exception.
      */
-    public void parseFile(InputStream is, String fileName) throws Exception {
+    public void parseFile(InputStream is, String fileName)
+            throws ImportException {
 
 	int lastSlash = fileName.lastIndexOf('/');
 	if (lastSlash != -1) {
@@ -244,76 +192,74 @@ public class IDLFileImport extends FileImportSupport {
 
 	// Create a modeller for the parser
 	Modeller modeller = new Modeller(currentProject.getModel(),
-	        			 diagram,
-	        			 myImport,
-	        			 getAttribute().isSelected(),
-	        			 getDatatype().isSelected(),
+	        			 mySettings.getDiagramInterface(),
+	        			 mySettings.getImportSession(),
+	        			 mySettings.isAttributeSelected(),
+	        			 mySettings.isDatatypeSelected(),
 	        			 fileName);
 	// start parsing at the classfile rule
-	parser.specification(modeller);
+	try {
+	    parser.specification(modeller);
+	} catch (RecognitionException e) {
+            throw new ImportException("File: " + fileName , e);
+	} catch (TokenStreamException e) {
+            throw new ImportException("File: " + fileName , e);
+	}
     }
 
-    /**
-     * If we have modified any diagrams, the project was modified and should be
-     * saved. I don't consider a import, that only modifies the metamodel, at
-     * this point (Andreas Rueckert). Calling
-     * Project.setNeedsSave(true) doesn't work here, because Project.postLoad()
-     * is called after the import and it sets the _needsSave flag to false.
-     *
-     * @return true, if any diagrams where modified and the project should be
-     *         saved before exit.
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#enable()
      */
-    public boolean needsSave() {
-	return (!diagram.getModifiedDiagrams().isEmpty());
+    public boolean enable() {
+        ImporterManager.getInstance().addimporter(this);
+        return true;
     }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
-     *
-     * Textual description of the module.
+    
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#disable()
      */
-    public String getModuleDescription() {
-	return "Java import from IDL files";
+    public boolean disable() {
+        return true;
     }
 
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#getName()
      */
-    public String getModuleKey() {
-	return "module.import.idl";
+    public String getName() {
+        return "IDL";
     }
-
-    /**
-     * @see org.argouml.application.api.ArgoModule#initializeModule()
+    
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#getInfo(int)
      */
-    public boolean initializeModule() {
-
-	// Advertise a little
-	LOG.info("IDL import module enabled!");
-
-	return true;
+    public String getInfo(int type) {
+        switch (type) {
+        case DESCRIPTION:
+            return "Java import from IDL files";
+        case AUTHOR:
+            return "Andreas Rueckert";
+        case VERSION:
+            return "0.2 - $Id$";
+        default:
+           return null;
+        }
     }
 
-    /**
-     * @see org.argouml.application.api.ArgoModule#getModuleName()
-     *
-     * Display name of the module.
-     */
-    public String getModuleName() {
-	return "IDL";
-    }
-
-    /**
-     * Provides an array of suffixe filters for the module. Must be implemented
-     * in child class.
-     *
-     * @return SuffixFilter[] suffixes for processing
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#getSuffixFilters()
      */
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {
 	    FileFilters.IDL_FILTER,
 	};
 	return result;
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#isParseable(java.io.File)
+     */
+    public boolean isParseable(File file) {
+        return FileImportUtils.matchesSuffix(file, getSuffixFilters());
     }
 
 }
