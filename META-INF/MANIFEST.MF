@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ArgoUML IDL module
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.module.idl
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin
-Bundle-Vendor: ArgoUML team
+Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml
