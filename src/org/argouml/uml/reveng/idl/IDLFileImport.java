@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
@@ -260,6 +261,13 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
      */
     public boolean isParseable(File file) {
         return FileImportUtils.matchesSuffix(file, getSuffixFilters());
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#getImportSettings()
+     */
+    public List getImportSettings() {
+        return null;
     }
 
 }
