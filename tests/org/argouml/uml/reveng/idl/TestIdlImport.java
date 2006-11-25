@@ -60,7 +60,7 @@ public class TestIdlImport extends TestCase {
     private static Object parsedPackage;
     private static Object parsedClass;
     
-    /**
+    /*
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestIdlImport(String str) {
