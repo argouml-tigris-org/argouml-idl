@@ -447,7 +447,8 @@ public class TestIdlImport extends TestCase {
         if (parsedClass == null) {
             parsedClass =
                 Model.getFacade().lookupIn(parsedPackage, CLASS_NAME);
-            assertNotNull("No class \"" + CLASS_NAME + "\" found.", parsedClass);
+            assertNotNull("No class \"" + CLASS_NAME + "\" found.", 
+                    parsedClass);
         }
     }
 

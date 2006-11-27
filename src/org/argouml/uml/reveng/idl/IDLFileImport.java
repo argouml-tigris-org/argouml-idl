@@ -69,7 +69,9 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
     /*
      * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
      */
-    public void parseFile(Project p, Object o, ImportSettings settings) throws ImportException {
+    public void parseFile(Project p, Object o, ImportSettings settings)
+        throws ImportException {
+        
 	if (o instanceof File) {
 	    File f = (File) o;
 	    mySettings = settings;
@@ -82,6 +84,7 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
      *
      * @param p The project, where the import results are added.
      * @param f The file to start with.
+     * @throws ImportException wrapped exception containing original error
      */
     public void startImport(Project p, File f) throws ImportException {
 	currentProject = p;
@@ -136,9 +139,10 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
      *
      * @param f The file or directory, we want to parse.
      * @param subdirectories If <tt>true</tt> we process subdirectories.
-     * @throws Exception Parser exceptions.
+     * @throws ImportException wrapped exception containing original error
      */
-    public void processFile(File f, boolean subdirectories) throws ImportException {
+    public void processFile(File f, boolean subdirectories)
+        throws ImportException {
 
 	if (f.isDirectory()
 	    && subdirectories) { // If f is a directory and the subdirectory
@@ -162,6 +166,7 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
      * and creates packages for the directories.
      *
      * @param f The directory.
+     * @throws ImportException wrapped exception containing original error
      */
     protected void processDirectory(File f) throws ImportException {
 	boolean doSubdirs = mySettings.isDescendSelected();
@@ -179,9 +184,10 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
      *
      * @param is The InputStream for the file to parse.
      * @param fileName The name of the parsed file.
+     * @throws ImportException 
      */
     public void parseFile(InputStream is, String fileName)
-            throws ImportException {
+        throws ImportException {
 
 	int lastSlash = fileName.lastIndexOf('/');
 	if (lastSlash != -1) {
@@ -242,7 +248,7 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
         case VERSION:
             return "0.2 - $Id$";
         default:
-           return null;
+            return null;
         }
     }
 
@@ -269,5 +275,4 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
     public List getImportSettings() {
         return null;
     }
-
 }
