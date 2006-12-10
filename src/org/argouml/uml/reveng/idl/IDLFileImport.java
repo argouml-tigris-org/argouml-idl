@@ -29,8 +29,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.application.api.ProgressMonitor;
 import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.reveng.FileImportUtils;
@@ -67,117 +71,30 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
     }
 
     /*
-     * @see org.argouml.uml.reveng.ImportInterface#parseFile(org.argouml.kernel.Project, java.lang.Object, org.argouml.uml.reveng.ImportSettings)
+     * @see org.argouml.uml.reveng.ImportInterface#parseFiles(org.argouml.kernel.Project, java.util.Collection, org.argouml.uml.reveng.ImportSettings, org.argouml.application.api.ProgressMonitor)
      */
-    public void parseFile(Project p, Object o, ImportSettings settings)
-        throws ImportException {
-        
-	if (o instanceof File) {
-	    File f = (File) o;
-	    mySettings = settings;
-	    startImport(p, f);
-	}
-    }
-
-    /**
-     * Start the import process for a project and a file.
-     *
-     * @param p The project, where the import results are added.
-     * @param f The file to start with.
-     * @throws ImportException wrapped exception containing original error
-     */
-    public void startImport(Project p, File f) throws ImportException {
-	currentProject = p;
-
-	// Process the current file. If it's a directory, process all the file
-	// in it.
-	processFile(f, true);
-
-    }
-
-    /**
-     * Count all the files, we're going to process, so we can display a
-     * progress bar.
-     *
-     * @param f The directory as a File.
-     * @param subdirectories If <tt>true</tt> we process subdirectories.
-     * @return The number of files to process.
-     */
-    private int countFiles(File f, boolean subdirectories) {
-	if (f.isDirectory() && subdirectories) {
-	    return countDirectory(f);
-	} else {
-	    if (f.getName().endsWith(".idl")) {
-		return 1;
-	    }
-	    return 0;
-	}
-    }
-
-    /**
-     * Count the files to process in a directory.
-     *
-     * @param f  The directory as a File.
-     * @return The number of files in that directory.
-     */
-    private int countDirectory(File f) {
-	int total = 0;
-	String[] files = f.list(); // Get the content of the directory
-
-	for (int i = 0; i < files.length; i++) {
-	    total
-		+= countFiles(
-			      new File(f, files[i]),
-			      mySettings.isDescendSelected());
-	}
-	return total;
-    }
-
-    /**
-     * The main method for all parsing actions. It calls the actual parser
-     * methods depending on the type of the file.
-     *
-     * @param f The file or directory, we want to parse.
-     * @param subdirectories If <tt>true</tt> we process subdirectories.
-     * @throws ImportException wrapped exception containing original error
-     */
-    public void processFile(File f, boolean subdirectories)
+    public Collection parseFiles(Project p, Collection files,
+            ImportSettings settings, ProgressMonitor monitor)
         throws ImportException {
 
-	if (f.isDirectory()
-	    && subdirectories) { // If f is a directory and the subdirectory
-	    // flag is set,
-	    processDirectory(f); // import all the files in this directory
-	} else {
-
-	    if (isParseable(f)) {
-		String fileName = f.getName();
-		try {
-		    parseFile(new FileInputStream(f), fileName);
-		} catch (FileNotFoundException e) {
-                    throw new ImportException("File: " + fileName , e);
-		}
-	    }
-	}
+        currentProject = p;
+        mySettings = settings;
+        Collection newElements = new HashSet();
+        monitor.setMaximumProgress(files.size());
+        int count = 1;
+        for (Iterator it = files.iterator(); it.hasNext();) {
+            File file = (File) it.next();
+            String fileName = file.getName();
+            try {
+                newElements.addAll(
+                        parseFile(new FileInputStream(file), fileName));
+            } catch (FileNotFoundException e) {
+                throw new ImportException("File not found: " + fileName, e);
+            }
+            monitor.updateProgress(count++);
+        }
+        return newElements;
     }
-
-    /**
-     * This method imports an entire directory. It calls the parser for files
-     * and creates packages for the directories.
-     *
-     * @param f The directory.
-     * @throws ImportException wrapped exception containing original error
-     */
-    protected void processDirectory(File f) throws ImportException {
-	boolean doSubdirs = mySettings.isDescendSelected();
-
-	String[] files = f.list(); // Get the content of the directory
-
-	for (int i = 0; i < files.length; i++) {
-	    processFile(new File(f, files[i]), doSubdirs);
-	}
-    }
-
 
     /**
      * This method parses a single IDL source file.
@@ -186,7 +103,7 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
      * @param fileName The name of the parsed file.
      * @throws ImportException 
      */
-    public void parseFile(InputStream is, String fileName)
+    public Collection parseFile(InputStream is, String fileName)
         throws ImportException {
 
 	int lastSlash = fileName.lastIndexOf('/');
@@ -198,13 +115,11 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
 	    new IDLParser(new IDLLexer(new BufferedInputStream(is)));
 
 	// Create a modeller for the parser
+        // TODO: Why is this using the Java specific modeller? - tfm
 	Modeller modeller = new Modeller(currentProject.getModel(),
-	        			 mySettings.getDiagramInterface(),
-	        			 mySettings.getImportSession(),
-	        			 mySettings.isAttributeSelected(),
-	        			 mySettings.isDatatypeSelected(),
+	        			 mySettings,
 	        			 fileName);
-	// start parsing at the classfile rule
+	// start parsing at the specification rule
 	try {
 	    parser.specification(modeller);
 	} catch (RecognitionException e) {
@@ -212,6 +127,7 @@ public class IDLFileImport implements ImportInterface, ModuleInterface {
 	} catch (TokenStreamException e) {
             throw new ImportException("File: " + fileName , e);
 	}
+        return modeller.getNewElements();
     }
 
     /*
