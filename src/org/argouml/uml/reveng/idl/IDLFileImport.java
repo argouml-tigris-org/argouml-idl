@@ -34,9 +34,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.application.api.ProgressMonitor;
 import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.persistence.ProgressMonitor;
 import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
