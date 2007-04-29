@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.swingext.ProgressMonitor;
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
