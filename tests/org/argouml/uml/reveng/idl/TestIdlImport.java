@@ -31,6 +31,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.uml.reveng.DummyImportSettings;
 import org.argouml.uml.reveng.java.Modeller;
 
 import antlr.RecognitionException;
@@ -70,6 +71,7 @@ public class TestIdlImport extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() {
         if (isParsed) {
             return;
@@ -89,8 +91,7 @@ public class TestIdlImport extends TestCase {
         Model.getModelManagementFactory().setRootModel(parsedModel);
 
         Modeller modeller =
-                new Modeller(parsedModel, null, null, false, false,
-                    "test.idl");
+                new Modeller(parsedModel, new DummyImportSettings(), "test.idl");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 
         try {
