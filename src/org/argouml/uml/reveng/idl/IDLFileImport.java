@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.kernel.Project;
-import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
@@ -53,7 +52,7 @@ import antlr.TokenStreamException;
  *
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
-public class IDLFileImport implements ImportInterface, ModuleInterface {
+public class IDLFileImport implements ImportInterface {
 
     /////////////////////////////////////////////////////////
     // Instance variables
