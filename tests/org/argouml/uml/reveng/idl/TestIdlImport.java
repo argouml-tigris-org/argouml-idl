@@ -289,8 +289,8 @@ public class TestIdlImport extends TestCase {
         Object initializer = Model.getFacade().getInitialValue(attributeForn);
         assertTrue("Attribute n should be private.",
                 Model.getFacade().isPrivate(attributeForn));
-        assertTrue("Attribute n should not be final.",
-                Model.getFacade().isChangeable(attributeForn));
+        assertFalse("Attribute n should not be final.",
+                Model.getFacade().isReadOnly(attributeForn));
         assertTrue("Attribute n should have type int.",
                 "int".equals(Model.getFacade().getName(attribType)));
         assertTrue("Attribute n has no initializer.",
@@ -303,9 +303,9 @@ public class TestIdlImport extends TestCase {
         assertTrue("Attribute s should be public.",
                 Model.getFacade().isPublic(attributeFors));
         assertTrue("Attribute s should be static.",
-                Model.getFacade().isClassifierScope(attributeFors));
+                Model.getFacade().isStatic(attributeFors));
         assertTrue("Attribute s should be final.",
-                !Model.getFacade().isChangeable(attributeFors));
+                Model.getFacade().isReadOnly(attributeFors));
         assertTrue("Attribute s should have type String.",
                 "String".equals(Model.getFacade().getName(attribType)));
         assertTrue("Attribute s has no initializer.",
@@ -402,7 +402,7 @@ public class TestIdlImport extends TestCase {
         assertTrue("Operation update should be public.",
                 Model.getFacade().isPublic(operationForupdate));
         assertTrue("Operation getString should be static.",
-                Model.getFacade().isClassifierScope(operationForgetString));
+                Model.getFacade().isStatic(operationForgetString));
         assertTrue("Operation getString should be private.",
                 Model.getFacade().isPrivate(operationForgetString));
         assertTrue("Operation x should be abstract.",
