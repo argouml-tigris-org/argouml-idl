@@ -45,9 +45,9 @@ import antlr.TokenStreamException;
  */
 public class TestIdlImport extends TestCase {
     
-    final static String FILENAME = "test.idl";
-    final static String PACKAGE_NAME = "MainModule";
-    final static String CLASS_NAME = "Bar";
+    static final String FILENAME = "test.idl";
+    static final String PACKAGE_NAME = "MainModule";
+    static final String CLASS_NAME = "Bar";
 
     /**
      * Flag, if the source is parsed already.
@@ -90,8 +90,8 @@ public class TestIdlImport extends TestCase {
 
         Model.getModelManagementFactory().setRootModel(parsedModel);
 
-        Modeller modeller =
-                new Modeller(parsedModel, new DummyImportSettings(), "test.idl");
+        Modeller modeller = new Modeller(parsedModel,
+				new DummyImportSettings(), "test.idl");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 
         try {
