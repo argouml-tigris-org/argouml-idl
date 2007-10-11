@@ -41,7 +41,7 @@ import antlr.TokenStreamException;
  * Test case to test the import of a IDL source file. 
  * 
  * This basically only tests that the basic import operation
- * succeeeds at this point.
+ * succeeds at this point.
  */
 public class TestIdlImport extends TestCase {
     
@@ -224,11 +224,11 @@ public class TestIdlImport extends TestCase {
         assertEquals("The generalization name is wrong.",
             "TestClass -> Object", Model.getFacade().getName(generalization));
         assertEquals("The child of the generalization should be the class.",
-            parsedClass, Model.getFacade().getChild(generalization));
+            parsedClass, Model.getFacade().getSpecific(generalization));
         assertEquals("The parent of the generalization should be \"Object\".",
             "Object",
             Model.getFacade().getName(
-                        Model.getFacade().getParent(generalization)));
+                        Model.getFacade().getGeneral(generalization)));
         Collection dependencies =
             Model.getFacade().getClientDependencies(parsedClass);
         assertNotNull("No dependencies found for class.", dependencies);
@@ -409,23 +409,6 @@ public class TestIdlImport extends TestCase {
                 Model.getFacade().isAbstract(operationForx));
         assertTrue("Operation x should have package visibility.",
                 Model.getFacade().isPackage(operationForx));
-    }
-
-    /**
-     * Gets the (first) body of an operation.
-     *
-     * @param operation The operation.
-     * @return The first body.
-     */
-    private static String getBody(Object operation) {
-        String body = null;
-        Collection methods = Model.getFacade().getMethods(operation);
-        if (methods != null && !methods.isEmpty()) {
-            Object expression =
-                Model.getFacade().getBody(methods.iterator().next());
-            body = (String) Model.getFacade().getBody(expression);
-        }
-        return body;
     }
     
     /**
