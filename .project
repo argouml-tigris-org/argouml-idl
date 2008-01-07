@@ -3,6 +3,7 @@
 	<name>argouml-module-idl</name>
 	<comment></comment>
 	<projects>
+		<project>argouml</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
