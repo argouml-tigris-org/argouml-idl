@@ -6,6 +6,5 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
 	<classpathentry kind="lib" path="/argouml-core-tools/lib/easymock12.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tests"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
