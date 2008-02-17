@@ -78,13 +78,12 @@
   <target name="generateparser" depends="prepare"
       description="generates the parser(s) from the grammar file(s)">
     <echo message="Generate parsers using ${antlrall.jar.path}"/>
-    <mkdir dir="${module.build.java}/org/argouml/uml/reveng/idl"/>
 
     <java fork="yes" classname="antlr.Tool" classpath="${antlrall.jar.path}"
           failonerror="yes">
       <arg value="-o"/>
-      <arg file="${module.build.java}/org/argouml/uml/reveng/idl"/>
-      <arg file="${module.src.dir}/org/argouml/uml/reveng/idl/idl_modified.g"/>
+      <arg file="src/org/argouml/uml/reveng/idl"/>
+      <arg file="src/org/argouml/uml/reveng/idl/idl_modified.g"/>
     </java>
   </target>
 
@@ -155,6 +154,14 @@
     <delete file="${developer.lib.dir}/ext/${result.jar}"/>
     <delete file="${argo.build.dir}/ext/${result.jar}"/>
     <delete dir="${module.build.dir}"/>
+  	<delete>
+  	  <fileset dir="src/org/argouml/uml/reveng/idl">
+  	  	<include name="IDLLexer.java"/>
+  	  	<include name="IDLParser.java"/>
+  	  	<include name="IDLTokenTypes.java"/>
+  	  	<include name="IDLTokenTypes.txt"/>
+  	  </fileset>
+    </delete>
   </target>
 
   <!-- =================================================================== -->
