@@ -1,7 +1,7 @@
-#Tue Nov 14 17:35:42 EST 2006
+#Thu Apr 03 16:11:11 EDT 2008
 filenames.properties=/argouml-core-tools/checkstyle/checkstyle.properties
 enabled=true
-file_filter=in\:\\.java$\nin\:\\.properties$\nex\:src/org/argouml/uml/reveng/idl/IDL(Lexer|Parser|TokenTypes)\\.java$\n
+file_filter=in\:\\.java$\nin\:\\.properties$\nex\:src_generated/*\n
 projectclassloader=true
 filenames.config=/argouml-core-tools/checkstyle/checkstyle_argouml.xml
 filenames.filter=/argouml-core-tools/checkstyle/checkclipse.filefilters

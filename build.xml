@@ -32,7 +32,8 @@
     <property name="argo.build.dir" value="${argo.root.dir}/build" />
      
     <property name="module.root" value="."/>
-    <property name="module.src.dir" value="${module.root}/src"/>
+    <property name="module.src.dir" 
+      value="${module.root}/src:${module.root}/src_generated"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
@@ -82,7 +83,7 @@
     <java fork="yes" classname="antlr.Tool" classpath="${antlrall.jar.path}"
           failonerror="yes">
       <arg value="-o"/>
-      <arg file="src/org/argouml/uml/reveng/idl"/>
+      <arg file="src_generated/org/argouml/uml/reveng/idl"/>
       <arg file="src/org/argouml/uml/reveng/idl/idl_modified.g"/>
     </java>
   </target>
