@@ -1,13 +1,12 @@
 header {
 package org.argouml.uml.reveng.idl;
 
-import org.argouml.uml.reveng.java.*;
-import org.argouml.uml.util.namespace.*;
-import java.io.*;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.uml.reveng.java.Modeller;
+import org.argouml.uml.reveng.java.ParameterDeclaration;
+import org.argouml.uml.util.namespace.StringNamespace;
 }
 
 /**
