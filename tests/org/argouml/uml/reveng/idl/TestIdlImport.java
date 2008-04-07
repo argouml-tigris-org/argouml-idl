@@ -1,5 +1,5 @@
 // $Id: TestJavaImportClass.java 10010 2006-03-10 07:45:56Z linus $
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.reveng.DummyImportSettings;
 import org.argouml.uml.reveng.java.Modeller;
 
@@ -66,6 +68,7 @@ public class TestIdlImport extends TestCase {
      */
     public TestIdlImport(String str) {
         super(str);
+        InitializeModel.initializeDefault();
     }
 
     /*
@@ -90,6 +93,8 @@ public class TestIdlImport extends TestCase {
 
         Model.getModelManagementFactory().setRootModel(parsedModel);
 
+        new InitProfileSubsystem().init();
+        
         Modeller modeller = new Modeller(parsedModel,
 				new DummyImportSettings(), "test.idl");
         assertNotNull("Creation of Modeller instance failed.", modeller);
