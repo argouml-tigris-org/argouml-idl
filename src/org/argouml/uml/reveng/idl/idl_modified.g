@@ -4,7 +4,8 @@ package org.argouml.uml.reveng.idl;
 import org.argouml.uml.reveng.java.*;
 import org.argouml.uml.util.namespace.*;
 import java.io.*;
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 }
@@ -60,17 +61,18 @@ options {
     // The modeller to create the meta model objects.
     private Modeller _modeller;
     
-    private Vector paramStack = new Vector();
+    private List<ParameterDeclaration> paramStack = 
+            new ArrayList<ParameterDeclaration>();
     
     /**
-     * This is a Vector containing String.
+     * This is a List of Strings.
      */
-    private Vector superclassStack = new Vector();
+    private List<String> superclassStack = new ArrayList<String>();
     
     private StringNamespace sns = new StringNamespace(".");
 
     /**
-     * Return the modeller of this parser.
+     * Return the modeler of this parser.
      *
      * @return The modeller of this parser.
      */
@@ -79,7 +81,7 @@ options {
     }
 
     /**
-     * Set the modeller of this parser.
+     * Set the modeler of this parser.
      *
      * @param modeller The new modeller of this parser.
      */
@@ -758,12 +760,8 @@ param_dcl
 { String type = null; String decl = null; }
 	:   ("in"^ | "out"^ | "inout"^)		// param_attribute
 	    param_type_spec decl=simple_declarator
-	    { Vector param = new Vector();
-	      type = "void";
-	      param.add(null);
-	      param.add(type);
-	      param.add(decl);
-	      paramStack.add(param);
+	    { type = "void";
+	      paramStack.add(new ParameterDeclaration((short) 0, type, decl));
 	    } 
 	;
 
