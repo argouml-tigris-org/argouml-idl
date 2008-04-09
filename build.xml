@@ -25,7 +25,7 @@
     <property file="${override.build.properties}"/>
 
     <!-- If not set by the override file we still need this one for antlr. -->
-    <property name="argo.src.dir" value="${argo.root.dir}/src_new"/>
+    <property name="argo.src.dir" value="${argo.root.dir}/src/app/src"/>
 
     <property file="${argo.src.dir}/default.properties"/>
 
@@ -36,15 +36,10 @@
       value="${module.root}/src:${module.root}/src_generated"/>
 
     <property name="manifest" value="manifest.mf"/>
-    <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
+    <property name="manifest.src" value="${module.root}/src/org/${manifest}"/>
 
     <property name="module.build.dir" value="${module.root}/build"/>
     <property name="module.build.classes" value="${module.build.dir}/classes"/>
-
- 	<!-- When building from ant, this directory is created and the java is
- 	     generated into it. When building from Eclipse, the source directory
- 	     is used. -->
- 	<property name="module.build.java" value="${module.build.dir}/java"/>
 
     <property name="result.jar" value="argo_idl.jar"/>
 
@@ -107,7 +102,6 @@
            deprecation="${deprecation}"
            optimize="${optimize}">
         <src path="${module.src.dir}"/>
-        <src path="${module.build.java}"/>
         <classpath>
             <path refid="compile.classpath"/>
         </classpath>
