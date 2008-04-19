@@ -40,7 +40,7 @@ import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
-import org.argouml.uml.reveng.java.Modeller;
+import org.argouml.uml.reveng.idl.Modeler;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
@@ -115,7 +115,7 @@ public class IDLFileImport implements ImportInterface {
 
 	// Create a modeller for the parser
         // TODO: Why is this using the Java specific modeller? - tfm
-	Modeller modeller = new Modeller(currentProject.getModel(),
+	Modeler modeller = new Modeler(currentProject.getModel(),
 	        			 mySettings,
 	        			 fileName);
 	// start parsing at the specification rule

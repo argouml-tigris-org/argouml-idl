@@ -4,8 +4,8 @@ package org.argouml.uml.reveng.idl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.argouml.uml.reveng.java.Modeller;
-import org.argouml.uml.reveng.java.ParameterDeclaration;
+import org.argouml.uml.reveng.idl.Modeler;
+import org.argouml.uml.reveng.idl.ParameterDeclaration;
 import org.argouml.uml.util.namespace.StringNamespace;
 }
 
@@ -33,6 +33,11 @@ import org.argouml.uml.util.namespace.StringNamespace;
  *
  *  modifications for ArgoUML:
  *  Markus Klink, mkl@tigris.org
+ *
+ * TODO: Only module, interface, and operation are support currently for
+ *       reverse engineering.  Support for other elements needs to be added.
+ *       Specific things missing include: attributes, structs, parameter types, 
+ *       operation return types, enums, exceptions, ...
  */
 class IDLParser extends Parser;
 options {
@@ -42,23 +47,12 @@ options {
 }
 {
 
-	public static final short ACC_PUBLIC    = 0x0001;
-    public static final short ACC_PRIVATE   = 0x0002;
-    public static final short ACC_PROTECTED = 0x0004;
-    public static final short ACC_STATIC    = 0x0008;
-    public static final short ACC_FINAL     = 0x0010;
-    public static final short ACC_SUPER     = 0x0020;
-    public static final short ACC_VOLATILE  = 0x0040;
-    public static final short ACC_TRANSIENT = 0x0080;
-    public static final short ACC_NATIVE    = 0x0100;
-    public static final short ACC_INTERFACE = 0x0200;
-    public static final short ACC_ABSTRACT  = 0x0400;                     
 
-	// This one is not(!) in the JVM specs, but required
-	public static final short ACC_SYNCHRONIZED  = 0x0800;
+    public static final short MOD_PUBLIC    = 0x0001;
+    public static final short MOD_READONLY    = 0x0010;
     
-    // The modeller to create the meta model objects.
-    private Modeller _modeller;
+    // The modeler to create the meta model objects.
+    private Modeler _modeler;
     
     private List<ParameterDeclaration> paramStack = 
             new ArrayList<ParameterDeclaration>();
@@ -73,19 +67,19 @@ options {
     /**
      * Return the modeler of this parser.
      *
-     * @return The modeller of this parser.
+     * @return The modeler of this parser.
      */
-    public final Modeller getModeller() {
-        return _modeller;
+    public final Modeler getModeler() {
+        return _modeler;
     }
 
     /**
      * Set the modeler of this parser.
      *
-     * @param modeller The new modeller of this parser.
+     * @param modeler The new modeler of this parser.
      */
-    public final void setModeller( Modeller modeller) {
-        _modeller = modeller;
+    public final void setModeler( Modeler modeler) {
+        _modeler = modeler;
     }
     
 	/**
@@ -100,10 +94,10 @@ options {
 
 }
 
-specification[Modeller modeller]
+specification[Modeler modeler]
 { 
-	setModeller(modeller);
-	getModeller().addComponent();
+	setModeler(modeler);
+	getModeler().addComponent();
 }
 	:   (import_dcl)* (definition)+
 	;
@@ -129,7 +123,7 @@ module
 	:    "module"^
 	     moduleName=identifier
 	     { sns.pushNamespaceElement(moduleName);
-	       getModeller().addPackage(sns.toString());
+	       getModeler().addPackage(sns.toString());
 	     }
 	     LCURLY! d:definition_list RCURLY! 
 	     { sns.popNamespaceElement(); }
@@ -153,9 +147,9 @@ interf
 interface_dcl[String classifierName]
 	:   { superclassStack.clear(); }
 	    interface_header
-		{ getModeller().addClass(classifierName, ACC_PUBLIC, getSuperclassName(), null, null); }
+		{ getModeler().addClass(classifierName, MOD_PUBLIC, getSuperclassName(), null, null); }
 	    LCURLY! interface_body RCURLY!
-	    { getModeller().popClassifier(); }
+	    { getModeler().popClassifier(); }
 	;
 
 // forward_dcl
@@ -735,7 +729,7 @@ op_dcl
 	    (raises_expr)?
 	    (context_expr)?
         { System.out.println("paramStack for " + operationName + " = " + paramStack.size());
-        getModeller().addOperation(ACC_PUBLIC, "void", operationName, paramStack, null); }
+        getModeler().addOperation(MOD_PUBLIC, "void", operationName, paramStack, null); }
 	;
 
 op_attribute

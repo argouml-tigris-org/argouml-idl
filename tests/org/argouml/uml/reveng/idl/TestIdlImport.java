@@ -34,7 +34,6 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.reveng.DummyImportSettings;
-import org.argouml.uml.reveng.java.Modeller;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -95,12 +94,12 @@ public class TestIdlImport extends TestCase {
 
         new InitProfileSubsystem().init();
         
-        Modeller modeller = new Modeller(parsedModel,
+        Modeler modeler = new Modeler(parsedModel,
 				new DummyImportSettings(), "test.idl");
-        assertNotNull("Creation of Modeller instance failed.", modeller);
+        assertNotNull("Creation of Modeler instance failed.", modeler);
 
         try {
-            parser.specification(modeller);
+            parser.specification(modeler);
             isParsed = true;
         } catch (RecognitionException e) {
             fail("Parsing of IDL source failed." + e);

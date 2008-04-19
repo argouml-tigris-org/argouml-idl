@@ -3,12 +3,17 @@
 module A {
   module B {
     module C {
+      /*
+      ** Interface block comment
+      */
       interface Bar {  };
     };
   };
 };
 
-
+/*
+** This is a block comment for the main module.
+*/
 module MainModule {
 
   typedef sequence< sequence<long> > myNestedSeq ;

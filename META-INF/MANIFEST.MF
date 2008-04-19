@@ -6,4 +6,5 @@ Bundle-Version: 0.25.5
 Bundle-Localization: plugin
 Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml.app,
- org.argouml.core.model
+ org.argouml.core.model,
+ org.argouml.core.infra
