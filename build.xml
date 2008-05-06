@@ -24,12 +24,8 @@
          correct for when running this from the Eclipse setup. -->
     <property file="${override.build.properties}"/>
 
-    <!-- If not set by the override file we still need this one for antlr. -->
-    <property name="argo.src.dir" value="${argo.root.dir}/src/app/src"/>
-
+    <property name="argo.src.dir" value="${argo.root.dir}/src/argouml-app/src"/>
     <property file="${argo.src.dir}/default.properties"/>
-
-    <property name="argo.build.dir" value="${argo.root.dir}/build" />
      
     <property name="module.root" value="."/>
     <property name="module.src.dir" 
