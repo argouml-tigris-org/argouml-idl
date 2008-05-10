@@ -50,7 +50,7 @@
     <property name="debug" value="on"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="off"/>
-    <property name="developer.lib.dir" value="${argo.build.dir}"/>
+    <property name="result.dir" value="${argo.root.dir}/build"/>
 
   </target>
 
@@ -142,7 +142,7 @@
   <!-- =================================================================== -->
   <target name="clean" depends="init"
         description="Cleans built files.">
-    <delete file="${developer.lib.dir}/ext/${result.jar}"/>
+    <delete file="${result.dir}/ext/${result.jar}"/>
     <delete file="${argo.build.dir}/ext/${result.jar}"/>
     <delete dir="${module.build.dir}"/>
   	<delete>
@@ -160,7 +160,7 @@
   <!-- =================================================================== -->
   <target name="install" depends="jar"
       description="Puts the jar file into ../argouml/build/ext">
-    <copy todir="${developer.lib.dir}/ext">
+    <copy todir="${result.dir}/ext">
       <fileset dir="${module.build.dir}" includes="${result.jar}"/>
     </copy>
   </target>
