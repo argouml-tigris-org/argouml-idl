@@ -766,12 +766,8 @@ class Modeler {
         if (!Model.getFacade().isAClass(element)) {
             return false;
         }
-        for (Object stereotype : Model.getFacade().getStereotypes(element)) {
-            if ("enumeration".equals(Model.getFacade().getName(stereotype))) {
-                return true;
-            }
-        }
-        return false;
+        return Model.getExtensionMechanismsHelper().hasStereotype(element, 
+                "enumeration");
     }
 
 
