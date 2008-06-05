@@ -32,7 +32,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -40,17 +39,15 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
-import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.ImportCommon;
 import org.argouml.uml.reveng.ImportInterface;
-import org.argouml.uml.reveng.ImportSettings;
 
 /**
  * Modeler maps IDL source code(parsed/recognised by ANTLR) to UML model
  * elements.
  * <p>
  * Cloned from the Java modeler which it used to depend on and only lightly
- * modified. Much of this machinery is unneed and can be deleted when someone
+ * modified. Much of this machinery is unneeded and can be deleted when someone
  * has the chance. - tfm
  * 
  * @author Marcus Andersson
@@ -90,14 +87,18 @@ class Modeler {
     private Stack<ParseState> parseStateStack;
 
     /**
-     * Only attributes will be generated.
+     * Only attributes will be generated. Setting currently unused. Left over
+     * from Java modeler. May be useful if/when support for attributes is
+     * implemented.
      */
-    private boolean noAssociations;
+    private boolean noAssociations = false;
 
     /**
-     * Arrays will be modelled as unique datatypes.
+     * Arrays will be modeled as unique datatypes.  Setting currently
+     * unused.  Left over from Java modeler.  May be useful if/when support
+     * for attributes is implemented.
      */
-    private boolean arraysAsDatatype;
+    private boolean arraysAsDatatype = false;
 
     /**
      * The name of the file being parsed.
@@ -141,14 +142,13 @@ class Modeler {
      * Create a new modeller.
      *
      * @param theModel The model to work with.
-     * @param settings the settings to use for this import
      * @param theFileName the current file name
      */
-    public Modeler(Object theModel, ImportSettings settings, 
-            String theFileName) {
+    Modeler(Object theModel, String theFileName) {
         model = theModel;
-        noAssociations = settings.isAttributeSelected();
-        arraysAsDatatype = settings.isDatatypeSelected();
+        
+        noAssociations = false;
+        arraysAsDatatype = false;
         currentPackage = this.model;
         newElements = new HashSet<Object>();
         parseState = new ParseState(this.model, getPackage(DEFAULT_PACKAGE));
@@ -1175,8 +1175,6 @@ class Modeler {
 	if (mClassifier == null
                 || noAssociations
                 || Model.getFacade().isADataType(mClassifier)
-//                || (Model.getFacade().getNamespace(mClassifier) 
-//                        == getPackage(JAVA_PACKAGE))
                         ) {
 
             Object mAttribute = parseState.getAttribute(name);

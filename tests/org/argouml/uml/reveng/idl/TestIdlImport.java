@@ -94,8 +94,7 @@ public class TestIdlImport extends TestCase {
 
         new InitProfileSubsystem().init();
         
-        Modeler modeler = new Modeler(parsedModel,
-				new DummyImportSettings(), "test.idl");
+        Modeler modeler = new Modeler(parsedModel, "test.idl");
         assertNotNull("Creation of Modeler instance failed.", modeler);
 
         try {
