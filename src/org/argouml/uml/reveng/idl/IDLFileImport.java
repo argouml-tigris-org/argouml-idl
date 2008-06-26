@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
-import org.argouml.util.FileFilters;
+import org.argouml.uml.reveng.SettingsTypes;
 import org.argouml.util.SuffixFilter;
 
 import antlr.RecognitionException;
@@ -165,7 +165,8 @@ public class IDLFileImport implements ImportInterface {
      */
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {
-	    FileFilters.IDL_FILTER,
+	    // TODO: I18N
+            new SuffixFilter("idl", "Interface Definition Language file"),
 	};
 	return result;
     }
@@ -180,7 +181,7 @@ public class IDLFileImport implements ImportInterface {
     /*
      * @see org.argouml.uml.reveng.ImportInterface#getImportSettings()
      */
-    public List getImportSettings() {
+    public List<SettingsTypes.Setting> getImportSettings() {
         return null;
     }
 }
