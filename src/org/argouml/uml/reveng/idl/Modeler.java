@@ -345,24 +345,29 @@ class Modeler {
     }
 
 
+    private static final String IMPORT_STEREOTYPE = "idlImport";
+    
     /*
-     * Build a import equivalent in UML. First search for an existing
-     * permission. Create a new one if not found.
+     * Build an IDL import equivalent in UML. We use a Dependency with the
+     * stereotype <<idlImport>>.
      */
     private Object buildImport(Object element, Object srcFile) {
-        // TODO: This use of UML Permission is non-standard.
+        // Look for an existing dependency and return it if found
         Collection dependencies = Model.getCoreHelper().getDependencies(
                 element, srcFile);
-        for (Object dependency : dependencies) {
-            if (Model.getFacade().isAPermission(dependency)) {
-                return dependency;
+        for (Object dep : dependencies) {
+            if (Model.getExtensionMechanismsHelper().hasStereotype(dep, 
+                    IMPORT_STEREOTYPE)) {
+                return dep;
             }
         }
         
-        // Didn't find it.  Let's create one.
-        Object pkgImport = Model.getCoreFactory().buildPermission(srcFile,
+        // Not found.  Create a new one.
+        Object pkgImport = Model.getCoreFactory().buildDependency(srcFile,
                 element);
-        String newName = makePermissionName(srcFile, element);
+        Model.getCoreHelper().addStereotype(pkgImport,
+                getStereotype(IMPORT_STEREOTYPE));
+        String newName = makeFromToName(srcFile, element);
         Model.getCoreHelper().setName(pkgImport, newName);
         newElements.add(pkgImport);
         return pkgImport;
@@ -1267,8 +1272,7 @@ class Modeler {
         if (mGeneralization == null) {
             mGeneralization =
                     Model.getCoreFactory().buildGeneralization(
-                            child, parent,
-                            makeGeneralizationName(child, parent));
+                            child, parent);
             newElements.add(mGeneralization);
         }
         if (mGeneralization != null) {
