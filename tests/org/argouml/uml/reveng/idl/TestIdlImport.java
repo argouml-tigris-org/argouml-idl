@@ -144,20 +144,20 @@ public class TestIdlImport extends TestCase {
         Collection dependencies =
             Model.getFacade().getClientDependencies(component);
         assertNotNull("No dependencies found for component.", dependencies);
-        Object permission = null;
+        Object packageImport = null;
         iter = dependencies.iterator();
         while (iter.hasNext()) {
             Object element = iter.next();
-            if (Model.getFacade().isAPermission(element)) {
-                permission = element;
+            if (Model.getFacade().isAPackageImport(element)) {
+                packageImport = element;
                 break;
             }
         }
-        assertNotNull("No import found.", permission);
+        assertNotNull("No import found.", packageImport);
         assertEquals("The import name is wrong.",
             "TestClass.java -> Observer",
-            Model.getFacade().getName(permission));
-        Collection suppliers = Model.getFacade().getSuppliers(permission);
+            Model.getFacade().getName(packageImport));
+        Collection suppliers = Model.getFacade().getSuppliers(packageImport);
         assertNotNull("No suppliers found in import.", suppliers);
         Object supplier = null;
         iter = suppliers.iterator();
