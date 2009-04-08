@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.argouml.argoeclipse.core.sourceImporter">
+         point="org.argouml.app.sourceImporter">
       <language
             id="org.argouml.language.idl"
             name="IDL ">
