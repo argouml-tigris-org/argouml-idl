@@ -1,0 +1,15 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><div id="waveframe" style="width: 500px; height: 500px"></div>
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript">
+google.load("wave", "1");
+
+function initialize() {
+      var waveFrame = document.getElementById("waveframe");
+      var embedOptions = {
+        ownerAddress: "ltolke@googlewave.com"
+      }
+      var wavePanel = new google.wave.WavePanel(embedOptions);
+      wavePanel.init(waveFrame)
+}
+google.setOnLoadCallback(initialize);
+</script>
