@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- 
+    Experimenting with maven for the nightly build.
+  -->
+
+  <parent>
+    <groupId>org.argouml</groupId>
+    <artifactId>parentpom</artifactId>
+    <version>0.35.1</version>
+    <relativePath>../argouml/tools/maven/parentpom.xml</relativePath>
+  </parent>
+
+  <artifactId>argo_idl</artifactId>
+  <version>0.35.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-model</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-diagrams-sequence</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>2.7.7-3</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>antlr</groupId>
+      <artifactId>antlr-runtime</artifactId>
+      <version>3.1.1-2</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>test-with-model</artifactId>
+      <version>0.35.1-SNAPSHOT</version>
+      <scope>tests</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>antlr-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <!--
+            Comma separated list of grammar files or pattern grammar files
+            By default, grammar file(s) is in ${basedir}/src/main/antlr
+          -->
+          <sourceDirectory>${project.basedir}/src</sourceDirectory>
+          <grammars>org/argouml/uml/reveng/idl/idl_modified.g</grammars>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <name>argo_idl</name>
+  <description>
+Idl support for argouml.
+  </description>
+
+  <scm>
+    <connection>scm:svn:http://argouml-idl.tigris.org/svn/argouml-idl/trunk/</connection>
+    <developerConnection>scm:svn:http://argouml-idl.tigris.org/svn/argouml-idl/trunk/</developerConnection>
+    <url>http://argouml-idl.tigris.org/source/browse/argouml-idl/trunk</url>
+  </scm>
+</project>
