@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.reveng.idl;
 
 import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.ImportClassLoader;
@@ -52,7 +53,8 @@ import org.argouml.uml.reveng.ImportClassLoader;
  */
 class PackageContext extends Context {
     
-    private static final Logger LOG = Logger.getLogger(PackageContext.class);
+    private static final Logger LOG =
+        Logger.getLogger(PackageContext.class.getName());
     
     /** The package this context represents. */
     private Object mPackage;
@@ -170,7 +172,8 @@ class PackageContext extends Context {
                     // Ignore - we'll deal with this later by checking to see
                     // if we found anything.
                 } catch (MalformedURLException e1) {
-                    LOG.warn("Classpath configuration error", e1);
+                    LOG.log(Level.WARNING,
+                            "Classpath configuration error", e1);
                 }
             }
 	}

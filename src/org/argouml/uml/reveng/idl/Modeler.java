@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CoreFactory;
@@ -69,7 +70,8 @@ import org.argouml.uml.reveng.ImportInterface;
  */
 class Modeler {
 
-    private static final Logger LOG = Logger.getLogger(Modeler.class);
+    private static final Logger LOG =
+        Logger.getLogger(Modeler.class.getName());
 
     private static final String DEFAULT_PACKAGE = "default";
     private static final List<String> EMPTY_STRING_LIST = 
@@ -337,7 +339,8 @@ class Modeler {
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && classifierName != null && mPackage != null) {
                     // we must guess if it's a class or an interface, so: class
-                    LOG.info("Modeler.java: " 
+                    LOG.log(Level.INFO,
+                            "Modeler.java: " 
                             + "forced creation of unknown classifier "
                             + classifierName);
                     // TODO: A better strategy would be to defer creating this
@@ -392,14 +395,6 @@ class Modeler {
     }   
     
     private String makeAssociationName(Object from, Object to) {
-        return makeFromToName(from, to);
-    }
-    
-    private String makeGeneralizationName(Object child, Object parent) {
-        return makeFromToName(child, parent);
-    }    
-
-    private String makePermissionName(Object from, Object to) {
         return makeFromToName(from, to);
     }
     
@@ -498,7 +493,8 @@ class Modeler {
 		getGeneralization(currentPackage, parentClass, mClass);
 	    } catch (ClassifierNotFoundException e) {
 	        if (forceIt && superclassName != null && model != null) {
-	            LOG.info("Modeler.java: forced creation of unknown class "
+	            LOG.log(Level.INFO,
+                            "Modeler.java: forced creation of unknown class "
 	                    + superclassName);
 	            String packageName = getPackageName(superclassName);
 	            String classifierName = getClassifierName(superclassName);
@@ -556,8 +552,9 @@ class Modeler {
             // Must add it anyway, or the class popping will mismatch.
             addClass(name, (short) 0, EMPTY_STRING_LIST, null,
                     EMPTY_STRING_LIST, "", forceIt);
-            LOG.info("Modeler.java: an anonymous class was created "
-		     + "although it could not be found in the classpath.");
+            LOG.log(Level.INFO,
+                    "Modeler.java: an anonymous class was created "
+                    + "although it could not be found in the classpath.");
         }
     }
 
@@ -627,7 +624,8 @@ class Modeler {
                 getGeneralization(currentPackage, parentInterface, mInterface);
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && interfaceName != null && model != null) {
-                    LOG.info("Modeler.java: " 
+                    LOG.log(Level.INFO,
+                            "Modeler.java: " 
                             + "forced creation of unknown interface "
                             + interfaceName);
                     String packageName = getPackageName(interfaceName);
@@ -686,7 +684,7 @@ class Modeler {
 //        } else {
             // enums are implicitly final unless they contain a class body
             // (which we won't know until we process the constants
-            Model.getCoreHelper().setLeaf(mClass, true);
+        Model.getCoreHelper().setLeaf(mClass, true);
 //        }
         Model.getCoreHelper().setRoot(mClass, false);
 
@@ -715,7 +713,8 @@ class Modeler {
                         .getInterface(getClassifierName(interfaceName));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && interfaceName != null && model != null) {
-                    LOG.info("Modeler: " 
+                    LOG.log(Level.INFO,
+                            "Modeler: " 
                             + "forced creation of unknown interface "
                             + interfaceName);
                     String packageName = getPackageName(interfaceName);
@@ -823,18 +822,16 @@ class Modeler {
 
         if (mClassifier == null) {
             // if the classifier could not be found in the model
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Created new classifier for " + name);
-            }
+            LOG.log(Level.INFO, "Created new classifier for {0}", name);
+
             mClassifier = newClassifier;
             Model.getCoreHelper().setName(mClassifier, name);
             Model.getCoreHelper().setNamespace(mClassifier, mNamespace);
             newElements.add(mClassifier);
         } else {
             // it was found and we delete any existing tagged values.
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Found existing classifier for " + name);
-            }
+            LOG.log(Level.INFO, "Found existing classifier for {0}", name);
+
             // TODO: Rewrite existing elements instead? - tfm
             cleanModelElement(mClassifier);
         }
@@ -964,8 +961,8 @@ class Modeler {
 //	    Model.getCoreHelper().setConcurrency(mOperation,
 //	            Model.getConcurrencyKind().getGuarded());
 //	} else 
-	    if (Model.getFacade().getConcurrency(mOperation)
-		   == Model.getConcurrencyKind().getGuarded()) {
+        if (Model.getFacade().getConcurrency(mOperation)
+            == Model.getConcurrencyKind().getGuarded()) {
 	    Model.getCoreHelper().setConcurrency(mOperation,
 	            Model.getConcurrencyKind().getSequential());
 	}
@@ -993,7 +990,8 @@ class Modeler {
 		    getContext(returnType).get(getClassifierName(returnType));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && returnType != null && model != null) {
-                    LOG.info("Modeler.java: " 
+                    LOG.log(Level.INFO,
+                            "Modeler.java: " 
                             + "forced creation of unknown classifier "
                             + returnType);
                     String packageName = getPackageName(returnType);
@@ -1031,7 +1029,8 @@ class Modeler {
 		    getContext(typeName).get(getClassifierName(typeName));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && typeName != null && model != null) {
-                    LOG.info("Modeler.java: " 
+                    LOG.log(Level.INFO,
+                            "Modeler.java: " 
                             + "forced creation of unknown classifier "
                             + typeName);
                     String packageName = getPackageName(typeName);
@@ -1115,7 +1114,7 @@ class Modeler {
      * track the problem down.
      */
     private void logError(String message, String identifier) {
-        LOG.warn(message + " : " + identifier);
+        LOG.log(Level.WARNING, message + " : " + identifier);
     }
     
 
@@ -1169,7 +1168,8 @@ class Modeler {
                         getContext(typeSpec).get(getClassifierName(typeSpec));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && typeSpec != null && model != null) {
-                    LOG.info("Modeler.java: forced creation of"
+                    LOG.log(Level.INFO,
+                            "Modeler.java: forced creation of"
                             + " unknown classifier " + typeSpec);
                     String packageName = getPackageName(typeSpec);
                     String classifierName = getClassifierName(typeSpec);
@@ -1194,7 +1194,7 @@ class Modeler {
 	if (mClassifier == null
                 || noAssociations
                 || Model.getFacade().isADataType(mClassifier)
-                        ) {
+            ) {
 
             Object mAttribute = parseState.getAttribute(name);
             if (mAttribute == null) {
@@ -1238,7 +1238,7 @@ class Modeler {
 //            if ((modifiers & IDLParser.ACC_FINAL) > 0) {
 //                Model.getCoreHelper().setReadOnly(mAttribute, true);
 //            } else 
-                if (Model.getFacade().isReadOnly(mAttribute)) {
+            if (Model.getFacade().isReadOnly(mAttribute)) {
                 Model.getCoreHelper().setReadOnly(mAttribute, true);
             }
             addDocumentationTag(mAttribute, javadoc);
@@ -1407,28 +1407,6 @@ class Modeler {
     }
 
     /**
-       Find an operation in the currentClassifier. If the operation is
-       not found, a new is created.
-
-       @param name The name of the method.
-       @return The method found or created.
-    */
-    private Object getMethod(String name) {
-        Object method = parseState.getMethod(name);
-        if (method != null) {
-            LOG.info("Getting the existing method " + name);
-        } else {
-            LOG.info("Creating a new method " + name);
-            method = Model.getCoreFactory().buildMethod(name);
-            newElements.add(method);
-            Model.getCoreHelper().addFeature(
-                    parseState.getClassifier(),
-                    method);
-        }
-        return method;
-    }
-
-    /**
      * Build a new attribute in the current classifier.
      * 
      * @param classifier
@@ -1513,13 +1491,13 @@ class Modeler {
        @return The stereotype.
     */
     private Object getStereotype(String name) {
-        LOG.debug("Trying to find a stereotype of name <<" + name + ">>");
+        LOG.fine("Trying to find a stereotype of name <<" + name + ">>");
         // Is this line really safe wouldn't it just return the first
         // model element of the same name whether or not it is a stereotype
         Object stereotype = Model.getFacade().lookupIn(model, name);
 
         if (stereotype == null) {
-            LOG.debug("Couldn't find so creating it");
+            LOG.fine("Couldn't find so creating it");
             return
                 Model.getExtensionMechanismsFactory()
                     .buildStereotype(name, model);
@@ -1528,13 +1506,13 @@ class Modeler {
         if (!Model.getFacade().isAStereotype(stereotype)) {
             // and so this piece of code may create an existing stereotype
             // in error.
-            LOG.debug("Found something that isn't a stereotype so creating it");
+            LOG.fine("Found something that isn't a stereotype so creating it");
             return
                 Model.getExtensionMechanismsFactory()
                     .buildStereotype(name, model);
         }
 
-        LOG.debug("Found it");
+        LOG.fine("Found it");
         return stereotype;
     }
 
@@ -1585,23 +1563,6 @@ class Modeler {
     }
 
     /**
-       Return the tagged value with a specific tag.
-
-       @param element The tagged value belongs to this.
-       @param name The tag.
-       @return The found tag. A new is created if not found.
-    */
-    private Object getTaggedValue(Object element, String name) {
-        Object tv = Model.getFacade().getTaggedValue(element, name);
-        if (tv == null) {
-            tv = Model.getExtensionMechanismsFactory().buildTaggedValue(name,
-                    "");
-            Model.getExtensionMechanismsHelper().addTaggedValue(element, tv);
-        }
-        return tv;
-    }
-
-    /**
      * This classifier was earlier generated by reference but now it is
      * its time to be parsed so we clean out remnants.
      *
@@ -1632,7 +1593,8 @@ class Modeler {
         String pkgName = name.substring(0, lastDot);
         return pkgName;
 
-        // TODO: Fix handling of inner classes along the lines of the following...
+        // TODO: Fix handling of inner classes along the lines of the
+        // following...
         
         // If the last element begins with an uppercase character, assume
         // that we've really got a class, not a package.  A better strategy
@@ -1695,7 +1657,7 @@ class Modeler {
 //	            element,
 //	            Model.getVisibilityKind().getProtected());
 //	} else 
-	    if ((modifiers & IDLParser.MOD_PUBLIC) > 0) {
+        if ((modifiers & IDLParser.MOD_PUBLIC) > 0) {
 	    Model.getCoreHelper().setVisibility(
 	            element,
 	            Model.getVisibilityKind().getPublic());
@@ -1751,7 +1713,6 @@ class Modeler {
 	if ((sJavaDocs != null)
 	    && (sJavaDocs.trim().length() >= 5)) {
 	    StringBuffer sbPureDocs = new StringBuffer(80);
-	    String sCurrentTagName = null;
 	    String sCurrentTagData = null;
 	    int nStartPos = 3; // skip the leading /**
 	    boolean fHadAsterisk = true;
@@ -1785,16 +1746,8 @@ class Modeler {
 		        } else {
 		            nTemp++;
 		        }
-		        if (sCurrentTagName != null) {
-		            sbPureDocs.append(sJavaDocs.substring(nStartPos,
-		                    nTemp));
-		            sCurrentTagData +=
-		                " "
-		                + sJavaDocs.substring (nStartPos, nTemp);
-		        } else {
-		            sbPureDocs.append(sJavaDocs.substring(nStartPos,
-		                    nTemp));
-		        }
+                        sbPureDocs.append(sJavaDocs.substring(nStartPos,
+                                                              nTemp));
 		        nStartPos = nTemp;
 		    }
 		    fHadAsterisk = false;

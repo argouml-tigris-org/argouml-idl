@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.reveng.idl;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.ImportClassLoader;
 
@@ -50,7 +52,7 @@ import org.argouml.uml.reveng.ImportClassLoader;
 class OuterClassifierContext extends Context {
     
     private static final Logger LOG = 
-        Logger.getLogger(OuterClassifierContext.class);
+        Logger.getLogger(OuterClassifierContext.class.getName());
     
     /** The classifier this context represents. */
     private Object mClassifier;
@@ -176,7 +178,7 @@ class OuterClassifierContext extends Context {
                     // with - narrow to specific expected errors that can be
                     // ignored - tfm
                     if (!(e1 instanceof ClassNotFoundException)) {
-                        LOG.warn(e1);
+                        LOG.log(Level.WARNING, "Exception", e1);
                     }
                     
                     // Continue the search through the rest of the model
