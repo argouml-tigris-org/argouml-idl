@@ -99,7 +99,10 @@
            excludes="*.txt,*.bat,*.xml,*.sh"
            debug="${debug}"
            deprecation="${deprecation}"
-           optimize="${optimize}">
+           optimize="${optimize}"
+           source="1.5"
+           target="1.5"
+	>
         <src path="${module.src.dir}"/>
         <classpath>
             <path refid="compile.classpath"/>
