@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IDLFileImport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argo_idl</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng.idl</a> &gt; <span class="el_source">IDLFileImport.java</span></div><h1>IDLFileImport.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2004-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng.idl;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.kernel.Project;
+import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.uml.reveng.FileImportUtils;
+import org.argouml.uml.reveng.ImportInterface;
+import org.argouml.uml.reveng.ImportSettings;
+import org.argouml.uml.reveng.ImporterManager;
+import org.argouml.uml.reveng.SettingsTypes;
+import org.argouml.util.SuffixFilter;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+
+/**
+ * This is the main class for the IDL import.
+ *
+ * @author Andreas Rueckert a_rueckert@gmx.net
+ */
+public class IDLFileImport implements ImportInterface {
+
+    /////////////////////////////////////////////////////////
+    // Instance variables
+
+    // The current project.
+<span class="nc" id="L74">    private Project currentProject = null;</span>
+
+    /**
+     * Default constructor.
+     */
+    public IDLFileImport() {
+<span class="nc" id="L80">        super();</span>
+<span class="nc" id="L81">    }</span>
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#parseFiles(org.argouml.kernel.Project, java.util.Collection, org.argouml.uml.reveng.ImportSettings, org.argouml.application.api.ProgressMonitor)
+     */
+    public Collection parseFiles(Project p, Collection files,
+            ImportSettings settings, ProgressMonitor monitor)
+        throws ImportException {
+
+<span class="nc" id="L90">        currentProject = p;</span>
+<span class="nc" id="L91">        Collection newElements = new HashSet();</span>
+<span class="nc" id="L92">        monitor.setMaximumProgress(files.size());</span>
+<span class="nc" id="L93">        int count = 1;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (Iterator it = files.iterator(); it.hasNext();) {</span>
+<span class="nc" id="L95">            File file = (File) it.next();</span>
+<span class="nc" id="L96">            String fileName = file.getName();</span>
+            try {
+<span class="nc" id="L98">                newElements.addAll(</span>
+<span class="nc" id="L99">                        parseFile(new FileInputStream(file), fileName));</span>
+<span class="nc" id="L100">            } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L101">                throw new ImportException(&quot;File not found: &quot; + fileName, e);</span>
+<span class="nc" id="L102">            }</span>
+<span class="nc" id="L103">            monitor.updateProgress(count++);</span>
+<span class="nc" id="L104">        }</span>
+<span class="nc" id="L105">        return newElements;</span>
+    }
+
+    /**
+     * This method parses a single IDL source file.
+     *
+     * @param is The InputStream for the file to parse.
+     * @param fileName The name of the parsed file.
+     * @throws ImportException 
+     */
+    public Collection parseFile(InputStream is, String fileName)
+        throws ImportException {
+
+<span class="nc" id="L118">	int lastSlash = fileName.lastIndexOf('/');</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">	if (lastSlash != -1) {</span>
+<span class="nc" id="L120">	    fileName = fileName.substring(lastSlash + 1);</span>
+	}
+
+<span class="nc" id="L123">	IDLParser parser =</span>
+	    new IDLParser(new IDLLexer(new BufferedInputStream(is)));
+
+	// Create a modeller for the parser
+<span class="nc" id="L127">	Modeler modeller = new Modeler(currentProject.getModel(), fileName);</span>
+	// start parsing at the specification rule
+	try {
+<span class="nc" id="L130">	    parser.specification(modeller);</span>
+<span class="nc" id="L131">	} catch (RecognitionException e) {</span>
+<span class="nc" id="L132">            throw new ImportException(&quot;File: &quot; + fileName , e);</span>
+<span class="nc" id="L133">	} catch (TokenStreamException e) {</span>
+<span class="nc" id="L134">            throw new ImportException(&quot;File: &quot; + fileName , e);</span>
+<span class="nc" id="L135">	}</span>
+<span class="nc" id="L136">        return modeller.getNewElements();</span>
+    }
+
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#enable()
+     */
+    public boolean enable() {
+<span class="nc" id="L143">        ImporterManager.getInstance().addImporter(this);</span>
+<span class="nc" id="L144">        return true;</span>
+    }
+    
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#disable()
+     */
+    public boolean disable() {
+<span class="nc" id="L151">        return true;</span>
+    }
+
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#getName()
+     */
+    public String getName() {
+<span class="nc" id="L158">        return &quot;IDL&quot;;</span>
+    }
+    
+    /*
+     * @see org.argouml.moduleloader.ModuleInterface#getInfo(int)
+     */
+    public String getInfo(int type) {
+<span class="nc bnc" id="L165" title="All 4 branches missed.">        switch (type) {</span>
+        case DESCRIPTION:
+<span class="nc" id="L167">            return &quot;Java import from IDL files&quot;;</span>
+        case AUTHOR:
+<span class="nc" id="L169">            return &quot;Andreas Rueckert&quot;;</span>
+        case VERSION:
+<span class="nc" id="L171">            return &quot;0.2 - $Id$&quot;;</span>
+        default:
+<span class="nc" id="L173">            return null;</span>
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#getSuffixFilters()
+     */
+    public SuffixFilter[] getSuffixFilters() {
+<span class="nc" id="L181">	SuffixFilter[] result = {</span>
+	    // TODO: I18N
+            new SuffixFilter(&quot;idl&quot;, &quot;Interface Definition Language file&quot;),
+	};
+<span class="nc" id="L185">	return result;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#isParseable(java.io.File)
+     */
+    public boolean isParseable(File file) {
+<span class="nc" id="L192">        return FileImportUtils.matchesSuffix(file, getSuffixFilters());</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#getImportSettings()
+     */
+    public List&lt;SettingsTypes.Setting&gt; getImportSettings() {
+<span class="nc" id="L199">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

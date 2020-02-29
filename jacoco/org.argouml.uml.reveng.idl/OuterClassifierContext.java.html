@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OuterClassifierContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argo_idl</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng.idl</a> &gt; <span class="el_source">OuterClassifierContext.java</span></div><h1>OuterClassifierContext.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng.idl;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.Model;
+import org.argouml.uml.reveng.ImportClassLoader;
+
+/**
+ * This context is an outer class containing inner classes.
+ *
+ * @author Marcus Andersson
+ */
+class OuterClassifierContext extends Context {
+    
+<span class="nc" id="L54">    private static final Logger LOG = </span>
+<span class="nc" id="L55">        Logger.getLogger(OuterClassifierContext.class.getName());</span>
+    
+    /** The classifier this context represents. */
+    private Object mClassifier;
+
+    /** The package this classifier belongs to */
+    private Object mPackage;
+
+    /** This is appended to classname when searching in classpath. */
+    private String namePrefix;
+
+    /** The java style name of the package. */
+    private String packageJavaName;
+
+    /**
+     Create a new context from a classifier.
+
+     @param base Based on this context.
+     @param theClassifier The classifier.
+     @param thePackage The package the classifier belongs to.
+     @param theNamePrefix Inner class prefix, like &quot;OuterClassname$&quot;
+    */
+    public OuterClassifierContext(Context base,
+				  Object theClassifier,
+				  Object thePackage,
+				  String theNamePrefix) {
+<span class="nc" id="L81">	super(base);</span>
+<span class="nc" id="L82">	this.mClassifier = theClassifier;</span>
+<span class="nc" id="L83">	this.mPackage = thePackage;</span>
+<span class="nc" id="L84">	this.namePrefix = theNamePrefix;</span>
+<span class="nc" id="L85">	packageJavaName = getJavaName(thePackage);</span>
+<span class="nc" id="L86">    }</span>
+
+    public Object getInterface(String name)
+	throws ClassifierNotFoundException {
+<span class="nc" id="L90">        return get(name, true);</span>
+    }
+
+    /**
+     * Get a classifier from the model. If it is not in the model, try
+     * to find it with the CLASSPATH. If found, in the classpath, the
+     * classifier is created and added to the model. If not found at
+     * all, a datatype is created and added to the model.
+     *
+     * @param name The name of the classifier to find.
+     * @return Found classifier.
+     */
+    public Object get(String name)
+        throws ClassifierNotFoundException {
+<span class="nc" id="L104">        return get(name, false);</span>
+    }
+
+    public Object get(String name, boolean interfacesOnly)
+	throws ClassifierNotFoundException {
+	// Search in classifier
+<span class="nc" id="L110">	Object iClassifier = Model.getFacade().lookupIn(mClassifier, name);</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">	if (iClassifier == null) {</span>
+	    Class classifier;
+	    // Try to find it via the classpath
+	    try {
+
+		// Special case for model
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (Model.getFacade().isAModel(mPackage)) {</span>
+<span class="nc" id="L119">		    classifier = Class.forName(namePrefix + name);</span>
+		}
+		else {
+<span class="nc" id="L122">                    String clazzName =</span>
+			packageJavaName + &quot;.&quot; + namePrefix + name;
+<span class="nc" id="L124">		    classifier =</span>
+<span class="nc" id="L125">			Class.forName(clazzName);</span>
+		}
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (classifier.isInterface()) {</span>
+		    iClassifier =
+<span class="nc" id="L129">			Model.getCoreFactory()</span>
+<span class="nc" id="L130">			    .buildInterface(name, mClassifier);</span>
+		}
+		else {
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		    if (interfacesOnly) {</span>
+<span class="nc" id="L134">		        throw new ClassNotFoundException();</span>
+		    } else {
+		        iClassifier =
+<span class="nc" id="L137">                                Model.getCoreFactory().buildClass(</span>
+                                        name, mClassifier);
+		    }
+		}
+	    }
+<span class="nc" id="L142">	    catch (ClassNotFoundException e) {</span>
+
+                // try USER classpath
+                try {
+
+                    // Special case for model
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                    if (Model.getFacade().isAModel(mPackage)) {</span>
+                        classifier =
+<span class="nc" id="L150">			    ImportClassLoader.getInstance()</span>
+<span class="nc" id="L151">			        .loadClass(namePrefix + name);</span>
+                    }
+                    else {
+<span class="nc" id="L154">                        String clazzName =</span>
+			    packageJavaName + &quot;.&quot; + namePrefix + name;
+                        classifier =
+<span class="nc" id="L157">			    ImportClassLoader.getInstance()</span>
+<span class="nc" id="L158">			        .loadClass(clazzName);</span>
+                    }
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                    if (classifier.isInterface()) {</span>
+                        iClassifier =
+<span class="nc" id="L162">			    Model.getCoreFactory()</span>
+<span class="nc" id="L163">			        .buildInterface(name, mClassifier);</span>
+                    }
+                    else {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                        if (interfacesOnly) {</span>
+<span class="nc" id="L167">                            throw new ClassNotFoundException();</span>
+                        } else {
+                            iClassifier =
+<span class="nc" id="L170">                                    Model.getCoreFactory().buildClass(</span>
+                                            name, mClassifier);
+                        }
+                    }
+
+                }
+<span class="nc" id="L176">                catch (Exception e1) {</span>
+                    // TODO: This too broad an exception catch to just continue
+                    // with - narrow to specific expected errors that can be
+                    // ignored - tfm
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                    if (!(e1 instanceof ClassNotFoundException)) {</span>
+<span class="nc" id="L181">                        LOG.log(Level.WARNING, &quot;Exception&quot;, e1);</span>
+                    }
+                    
+                    // Continue the search through the rest of the model
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                    if (getContext() != null) {</span>
+<span class="nc" id="L186">                        iClassifier = getContext().get(name, interfacesOnly);</span>
+                    }
+<span class="nc" id="L188">                }</span>
+<span class="nc" id="L189">	    }</span>
+	}
+<span class="nc" id="L191">	return iClassifier;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
