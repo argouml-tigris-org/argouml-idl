@@ -102,8 +102,7 @@ Idl support for argouml.
   </description>
 
   <scm>
-    <connection>scm:svn:http://argouml-idl.tigris.org/svn/argouml-idl/trunk/</connection>
-    <developerConnection>scm:svn:http://argouml-idl.tigris.org/svn/argouml-idl/trunk/</developerConnection>
-    <url>http://argouml-idl.tigris.org/source/browse/argouml-idl/trunk</url>
+    <!-- Specify this or maven will add artifactId. -->
+    <url>https://github.com/argouml-tigris-org/${github.site.repositoryName}</url>
   </scm>
 </project>
