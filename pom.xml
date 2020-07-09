@@ -55,9 +55,15 @@
     </dependency>
 
     <dependency>
-      <groupId>org.argouml</groupId>
-      <artifactId>test-with-model</artifactId>
-      <version>${project.version}</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <type>jar</type>
+      <scope>tests</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>easymock</groupId>
+      <artifactId>easymock</artifactId>
       <scope>tests</scope>
     </dependency>
 
