@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="40" tokens="238">
-<file line="1747" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1836" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1747" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1836" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 		_loop395:
@@ -49,8 +49,8 @@
 </codefragment>
 </duplication>
 <duplication lines="31" tokens="214">
-<file line="1716" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1805" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1716" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1805" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 		{
@@ -88,10 +88,10 @@
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="183">
-<file line="1716" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1748" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1805" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1837" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1716" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1748" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1805" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1837" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 		{
@@ -122,8 +122,8 @@
 </codefragment>
 </duplication>
 <duplication lines="46" tokens="160">
-<file line="1428" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1616" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1428" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1616" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 		case 'E':  case 'e':
@@ -176,8 +176,8 @@
 </codefragment>
 </duplication>
 <duplication lines="17" tokens="158">
-<file line="1009" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1071" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1009" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1071" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 				}
@@ -201,9 +201,9 @@
 </codefragment>
 </duplication>
 <duplication lines="45" tokens="154">
-<file line="1336" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1429" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1617" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1336" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1429" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1617" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 				{
@@ -255,8 +255,8 @@
 </codefragment>
 </duplication>
 <duplication lines="38" tokens="132">
-<file line="1487" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1674" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1487" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1674" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 			break;
@@ -301,8 +301,8 @@
 </codefragment>
 </duplication>
 <duplication lines="17" tokens="131">
-<file line="1008" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1062" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1008" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1062" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 					mOCTDIGIT(false);
@@ -326,8 +326,8 @@
 </codefragment>
 </duplication>
 <duplication lines="40" tokens="115">
-<file line="1867" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLParser.java"/>
-<file line="6267" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLParser.java"/>
+<file line="1867" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLParser.java"/>
+<file line="6267" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLParser.java"/>
 <codefragment>
 <![CDATA[
 		AST value_element_AST = null;
@@ -374,8 +374,8 @@
 </codefragment>
 </duplication>
 <duplication lines="12" tokens="114">
-<file line="1033" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1059" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1033" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1059" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 			mHEXDIGIT(false);
@@ -394,8 +394,8 @@
 </codefragment>
 </duplication>
 <duplication lines="11" tokens="114">
-<file line="1037" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
-<file line="1079" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1037" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
+<file line="1079" path="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java"/>
 <codefragment>
 <![CDATA[
 			}
