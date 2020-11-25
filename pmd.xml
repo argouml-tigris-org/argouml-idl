@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-11-25T18:19:17.540">
-<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/src/org/argouml/uml/reveng/idl/Modeler.java">
+<pmd version="4.3" timestamp="2020-11-25T18:18:28.314">
+<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master/src/org/argouml/uml/reveng/idl/Modeler.java">
 <violation beginline="802" endline="869" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.uml.reveng.idl" class="Modeler" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused method parameters such as 'typeParameters'.
 </violation>
@@ -17,12 +17,12 @@ Avoid unused method parameters such as 'modifiers'.
 Avoid unused local variables such as 'sCurrentTagData'.
 </violation>
 </file>
-<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/src/org/argouml/uml/reveng/idl/PackageContext.java">
+<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master/src/org/argouml/uml/reveng/idl/PackageContext.java">
 <violation beginline="171" endline="174" begincolumn="17" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.uml.reveng.idl" class="PackageContext" method="get" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java">
+<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLLexer.java">
 <violation beginline="5" endline="5" begincolumn="1" endcolumn="27" rule="UnusedImports" ruleset="Import Statement Rules" package="org.argouml.uml.reveng.idl" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'java.util.ArrayList'
 </violation>
@@ -201,7 +201,7 @@ Avoid unused local variables such as '_saveIndex'.
 Avoid unused local variables such as '_saveIndex'.
 </violation>
 </file>
-<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLParser.java">
+<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLParser.java">
 <violation beginline="8" endline="8" begincolumn="1" endcolumn="42" rule="ImportFromSamePackage" ruleset="Import Statement Rules" package="org.argouml.uml.reveng.idl" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#ImportFromSamePackage" priority="3">
 No need to import a type that lives in the same package
 </violation>
@@ -233,7 +233,7 @@ Avoid unused imports such as 'antlr.collections.impl.ASTArray'
 Avoid unused local variables such as 'd_AST'.
 </violation>
 </file>
-<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master@2/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLTokenTypes.java">
+<file name="/var/lib/jenkins/workspace/_organization_argouml-idl_master/target/generated-sources/antlr/org/argouml/uml/reveng/idl/IDLTokenTypes.java">
 <violation beginline="5" endline="5" begincolumn="1" endcolumn="27" rule="UnusedImports" ruleset="Import Statement Rules" package="org.argouml.uml.reveng.idl" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'java.util.ArrayList'
 </violation>
